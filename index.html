@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./styles/index.css" />
+		<link rel="stylesheet" href="./scripts/window/index.css" />
+		<link rel="stylesheet" href="./scripts/console/index.css" />
+		<script src="./scripts/jquery.js"></script>
+		<script src="./scripts/mvvm.js"></script>
+		<script src="./scripts/window/index.js"></script>
+		<script src="./scripts/console/index.js"></script>
+		<script src="./scripts/index.js"></script>
+		<title>智能合约配置批量修改器</title>
+	</head>
+	<body>
+		<div class="loadding" ></div>
+		<div class="template">
+
+			<table class="tableStyle" if="isShowCCMain === false"  border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>项目根目录:</td>
+					<td><input type="file"   webkitdirectory /></td>
+					<td><button class="findConfigBtn" @click="searchForder()">查找配置文件</button></td>
+				</tr>
+			</table>
+
+			<div else >
+				<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td>合约配置文件位置:</td>
+						<td colspan="2">{{configPath}}</td>
+					</tr>
+					<tr>
+						<td>合约abi文件位置:</td>
+						<td colspan="2">{{abiPath}}</td>
+					</tr>
+				</table>
+
+
+				<div class='modify_func_btn' >
+					<div class="selected" data-name="m_set" @click="showPanel(false)" >配置批量修改</div>
+					<div data-name="s_set"  @click="showPanel(true)" >增加/设置单个配置文件</div>
+				</div>
+
+				<div class='s_container' if="isShowSPage === true"  >
+					<div class="stitle">文件列表(配置):<button @click="addConConfigFile()" >+增加配置文件</button></button></div>
+					<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+						<tr for="fileList_configs">
+							<td>文件名:</td>
+							<td>{{item.name}}</td>
+							<td><button  >修改</button></td>
+							<td><button  >删除</button></td>
+						</tr>
+					</table>
+
+					<div class="stitle">文件列表(abi):</div>
+					<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+						<tr for="fileList_abis">
+							<td>文件名:</td>
+							<td>{{item.name}}</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class='s_container' else >
+					<div class="stitle">配置列表(测试环境): <button @click="changeConfig()">更改并保存配置</button></div>
+					<div class="configList dev">
+						<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td>依赖链ID:</td>
+								<td><input type="text" :data="val:deps.dev.depChainId" /></td>
+							</tr>
+							<tr>
+								<td>依赖链名称:</td>
+								<td><input type="text" :data="val:deps.dev.depChainName" /></td>
+							</tr>
+							<tr>
+								<td>依赖链节点:</td>
+								<td><input type="text" :data="val:deps.dev.depChainNode" /></td>
+							</tr>
+							<tr>
+								<td>依赖链ABI文件请求前缀:</td>
+								<td><input type="text" :data="val:deps.dev.depChainfix" /></td>
+							</tr>
+							<tr>
+								<td>链符号:</td>
+								<td><input type="text" :data="val:deps.dev.depSymbol" /></td>
+							</tr>
+							<tr>
+								<td>链浏览器访问地址:</td>
+								<td><input type="text" :data="val:deps.dev.depVisitUrl" /></td>
+							</tr>
+							<tr>
+								<td>链小数位数:</td>
+								<td><input type="text" :data="val:deps.dev.depDecimals" /></td>
+							</tr>
+						</table>
+						<table for="configs.dev" class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td>合约名称:</td>
+								<td>{{item.name}}</td>
+							</tr>
+							<tr>
+								<td>合约ID:</td>
+								<td><input type="text" :data="val:item.id" /></td>
+							</tr>
+							<tr>
+								<td>abi文件位置:</td>
+								<td>{{item.abiFileName}}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="stitle">配置列表(正式环境): <button @click="changeConfig()">更改并保存配置</button></div>
+					<div class="configList pro">
+						<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td>依赖链ID:</td>
+								<td><input type="text" :data="val:deps.pro.depChainId" /></td>
+							</tr>
+							<tr>
+								<td>依赖链名称:</td>
+								<td><input type="text" :data="val:deps.pro.depChainName" /></td>
+							</tr>
+							<tr>
+								<td>依赖链节点:</td>
+								<td><input type="text" :data="val:deps.pro.depChainNode" /></td>
+							</tr>
+							<tr>
+								<td>依赖链ABI文件请求前缀:</td>
+								<td><input type="text" :data="val:deps.pro.depChainfix" /></td>
+							</tr>
+							<tr>
+								<td>链符号:</td>
+								<td><input type="text" :data="val:deps.pro.depSymbol" /></td>
+							</tr>
+							<tr>
+								<td>链浏览器访问地址:</td>
+								<td><input type="text" :data="val:deps.pro.depVisitUrl" /></td>
+							</tr>
+							<tr>
+								<td>链小数位数:</td>
+								<td><input type="text" :data="val:deps.pro.depDecimals" /></td>
+							</tr>
+						</table>
+						<table for="configs.pro" class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td>合约名称:</td>
+								<td>{{item.name}}</td>
+							</tr>
+							<tr>
+								<td>合约ID:</td>
+								<td><input type="text" :data="val:item.id" /></td>
+							</tr>
+							<tr>
+								<td>abi文件位置:</td>
+								<td>{{item.abiFileName}}</td>
+							</tr>
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="addingLayerTemplate" >
+			<div class="stitle">文件设置:</div>
+			<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>配置文件名称:</td>
+					<td><input type="text" :data="val:filename" /></td>
+				</tr>
+				<tr>
+					<td>配置的保存位置:</td>
+					<td>{{path}}{{filename}}Config.js</td>
+				</tr>
+			</table>
+			<hr/>
+			<div class="stitle">dev测试环境链(网络)配置:</div>
+			<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>依赖链ID:</td>
+					<td>{{dev.info.depChainId}}</td>
+				</tr>
+				<tr>
+					<td>依赖链名称:</td>
+					<td>{{dev.info.depChainName}}</td>
+				</tr>
+				<tr>
+					<td>依赖链节点:</td>
+					<td>{{dev.info.provider}}</td>
+				</tr>
+				<tr>
+					<td>依赖链ABI文件请求前缀:</td>
+					<td>{{dev.info.abiOnlineLinkTemp}}</td>
+				</tr>
+				<tr>
+					<td>链符号:</td>
+					<td>{{dev.info.symbol}}</td>
+				</tr>
+				<tr>
+					<td>链浏览器访问地址:</td>
+					<td>{{dev.info.visitUrl}}</td>
+				</tr>
+				<tr>
+					<td>链小数位数:</td>
+					<td>{{dev.info.decimals}}</td>
+				</tr>
+			</table>
+			<div class="stitle">dev测试环境合约配置: <button @click="addOneConfig('dev')" >+ 增加一条配置</button></div>
+			<table for='dev.cConfigs' class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>合约名称:</td>
+					<td><input type="text" :data="val:item.name"  /></td>
+					<td rowspan="2" ><button @click="deleteConfig('dev',i)" >删除这条配置</button></td>
+				</tr>
+				<tr>
+					<td>合约ID:</td>
+					<td><input type="text" :data="val:item.value.id" /></td>
+				</tr>
+			</table>
+			<hr/>
+			<div class="stitle">正式(生产)环境链(网络)配置:</div>
+			<table class="tableStyle" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>依赖链ID:</td>
+					<td>{{pro.info.depChainId}}</td>
+				</tr>
+				<tr>
+					<td>依赖链名称:</td>
+					<td>{{pro.info.depChainName}}</td>
+				</tr>
+				<tr>
+					<td>依赖链节点:</td>
+					<td>{{pro.info.provider}}</td>
+				</tr>
+				<tr>
+					<td>依赖链ABI文件请求前缀:</td>
+					<td>{{pro.info.abiOnlineLinkTemp}}</td>
+				</tr>
+				<tr>
+					<td>链符号:</td>
+					<td>{{pro.info.symbol}}</td>
+				</tr>
+				<tr>
+					<td>链浏览器访问地址:</td>
+					<td>{{pro.info.visitUrl}}</td>
+				</tr>
+				<tr>
+					<td>链小数位数:</td>
+					<td>{{pro.info.decimals}}</td>
+				</tr>
+			</table>
+			<div class="stitle">正式(生产)环境合约配置: <button @click="addOneConfig('pro')" >+ 增加一条配置</button></div>
+			<table class="tableStyle" for='pro.cConfigs' border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>合约名称:</td>
+					<td><input type="text" :data="val:item.name" /></td>
+					<td rowspan="2" ><button @click="deleteConfig('pro',i)" >删除这条配置</button></td>
+				</tr>
+				<tr>
+					<td>合约ID:</td>
+					<td><input type="text"  :data="val:item.value.id" /></td>
+				</tr>
+			</table>
+			<hr/>
+			<div class="stitle"><button @click="saveConfig()" >保存配置文件并自动下载和配置ABI文件</button></div>
+		</div>
+
+	</body>
+</html>

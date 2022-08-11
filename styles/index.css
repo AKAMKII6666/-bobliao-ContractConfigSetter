@@ -1,0 +1,115 @@
+html,
+body,
+div,
+table,
+li,
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+.tableStyle {
+	width: 100%;
+	border-top: 2px solid #eee;
+	border-bottom: 2px solid #eee;
+	margin: 20px 0px 20px 0px;
+}
+
+.tableStyle:hover {
+	border-top: 2px solid #454545;
+	border-bottom: 2px solid #454545;
+}
+
+.tableStyle tbody tr:nth-child(odd) {
+	background-color: #d8daeb;
+}
+
+.tableStyle tbody tr {
+	background-color: #eaebf1;
+}
+
+.tableStyle tbody tr:hover {
+	background-color: #e3ecd3;
+}
+
+.tableStyle tbody td {
+	height: 30px;
+}
+
+.tableStyle tbody td:nth-child(1) {
+	width: 200px;
+	text-align: right;
+}
+
+.tableStyle tbody td input[type="text"] {
+	width: 500px;
+}
+
+.stitle {
+	height: 40px;
+	font-size: 18px;
+	text-indent: 20px;
+	margin-top: 20px;
+	background-color: #d5d5d5;
+	line-height: 40px;
+}
+
+.configList {
+	padding: 20px;
+	background-color: #eeeeee;
+	border-top: 3px solid #7c751e;
+	border-bottom: 3px solid #7c751e;
+}
+
+.modify_func_btn{
+	height:30px;
+	line-height: 30px;
+	border-bottom:5px solid rgb(18, 155, 155);
+}
+
+.modify_func_btn div{
+	height:30px;
+	line-height: 30px;
+	float: left;
+	padding:0px 10px;
+	cursor:pointer;
+	margin-left:20px;
+	color:#fff;
+	background-color: rgba(18, 155, 155, 0.418);
+}
+
+.modify_func_btn div.selected{
+	background-color: rgb(18, 155, 155);
+}
+
+.addingLayerTemplate{
+	overflow: hidden;
+	display: none;
+}
+
+.loadding{
+	background-image: url(./loadding.svg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: rgba(255,255,255,0.5);
+	position:fixed;
+	width:100%;
+	height: 100%;
+	z-index: 999;
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

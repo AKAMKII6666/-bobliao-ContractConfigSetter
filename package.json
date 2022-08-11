@@ -1,0 +1,23 @@
+{
+	"name": "contractconfigsetter",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"pacage": "sudo electron-packager ./ Translator --out ./bin --app-version 0.1 --overwrite --icon=./icon.icns",
+		"install": "set ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/ && node ./node_modules/electron/install.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"-": "^0.0.1",
+		"D": "^1.0.0",
+		"electron": "^20.0.2"
+	},
+	"devDependencies": {
+		"@electron/remote": "^2.0.1",
+		"prettier": "^2.4.1"
+	}
+}
